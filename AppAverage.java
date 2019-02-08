@@ -19,12 +19,16 @@ public class AppAverage implements Observer {
      * Class creation method. Initializes the values to their default value.
      * The Calendar is initialized to be the current Calendar value.
      */
-    public AppAverage(){
-        this.weatherdata = new WeatherData();
-        this.maxTemperature = DEFAULT_TEMPERATURE;
-        this.minTemperature = DEFAULT_TEMPERATURE;
+    public AppAverage(WeatherData weatherdata){
+        // Initialize to default values
+        this.weatherdata = weatherdata;
+        this.maxTemperature = Float.MIN_VALUE;
+        this.minTemperature = Float.MAX_VALUE;
         this.timesUpdated = 0;
         this.dateOfUpdate = Calendar.getInstance();
+        
+        // Tell WeatherData that a new Observer has been created.
+        weatherdata.registerObserver(this);
     }
 
     /**
@@ -32,17 +36,17 @@ public class AppAverage implements Observer {
      * Uses the temperature obtained from WeatherData to calculate the
      *  average temperature per month basis.
      */
-    public void update(){
+    public void update(float temperature, float humidity, float pressure){
         // Every time the month changes, the current values are reset.
         resetIfNewMonth();
 
         // Updates the values if the temperature is higher or lower than the
         //  previous values.
-        float currentTemperature = weatherdata.getTemperature();
-        if (currentTemperature > maxTemperature)
-            maxTemperature = currentTemperature;
-        else if (currentTemperature < minTemperature)
-            minTemperature = currentTemperature;
+        if (temperature > maxTemperature)
+            maxTemperature = temperature;
+
+        if (temperature < minTemperature)
+            minTemperature = temperature;
         
         // Prints the values used.
         timesUpdated ++;
@@ -53,7 +57,7 @@ public class AppAverage implements Observer {
      * Verifies if a new Month is ocurring based on the date of updating.
      * If a new Month is present, all values are reset.
      */
-    private boolean resetIfNewMonth(){
+    private void resetIfNewMonth(){
         // Definition of variables
         Calendar currentDate;
 
@@ -62,13 +66,11 @@ public class AppAverage implements Observer {
 
         // Resets the values for the averages if a new Month is present.
         if (dateOfUpdate.get(Calendar.MONTH) != currentDate.get(Calendar.MONTH)){
-            this.maxTemperature = DEFAULT_TEMPERATURE;
-            this.minTemperature = DEFAULT_TEMPERATURE;
+            this.maxTemperature = Float.MIN_VALUE;
+            this.minTemperature = Float.MAX_VALUE;
             this.timesUpdated = 0;
             this.dateOfUpdate = currentDate;
-            return true;
-        } else
-            return false;
+        }
     }
 
     /**
