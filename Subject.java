@@ -1,7 +1,7 @@
 interface Subject
 {
-    public void registerObserver();
-    public void removeObserver();
-    public void notifyObserver();
+    public void registerObserver(Observer o);
+    public void removeObserver(Observer o);
+    public void notifyObserver(Observer o);
     
 }
