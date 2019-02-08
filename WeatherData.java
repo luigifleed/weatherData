@@ -9,24 +9,24 @@ public class WeatherData implements Subject{
         observers = new ArrayList<Observer>;
    }
 
-   public registerObserver(Observer o){
+   public void registerObserver(Observer o){
        observers.add(o);
    }
 
-   public removeObserver(Observer o){
+   public void removeObserver(Observer o){
        int index = observers.indexOf(o);
        if(index >= 0)
             observers.remove(o);
    }
 
-   public notifyObservers(){
+   public void notifyObservers(){
         for(int i = 0; i < observers.size(); i++){
             Observer observer = (Observer) observers.get(i);
             observer.update(temperature, humidity, pressure);
         }
    }
 
-   public measurementChanged(){
+   public void measurementChanged(){
        notifyObservers();
    }
 
