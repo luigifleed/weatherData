@@ -1,4 +1,4 @@
-public class AppCurrentConditions implements Observer, DisplayElements {
+public class AppCurrentConditions implements Observer, DisplayElement {
     
     private float temperature;
     private float humidity;
