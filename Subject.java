@@ -1,4 +1,4 @@
-public interface Subject
+interface Subject
 {
     public void registerObserver();
     public void removeObserver();
