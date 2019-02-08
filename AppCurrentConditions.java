@@ -1,5 +1,5 @@
 public class AppCurrentConditions implements Observer, DisplayElement {
-    
+
     private float temperature;
     private float humidity;
     private float pressure;
@@ -18,8 +18,8 @@ public class AppCurrentConditions implements Observer, DisplayElement {
     }
 
     public void display() {
-        System.out.println("Current conditions: " + temperature + 
-                            "F degrees, " + humidity + "% humidity, and " + 
+        System.out.println("Current conditions: " + temperature +
+                            "F degrees, " + humidity + "% humidity, and " +
                             pressure + "pressure");
     }
 }

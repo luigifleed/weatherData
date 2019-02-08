@@ -1,12 +1,12 @@
 public class WeatherData implements Subject{
-   
+
    ArrayList<Observer> observers;
    float humidity;
    float pressure;
    float temperature;
 
    public WeatherData() {
-        observers = new ArrayList<Observer>;
+        observers = new ArrayList();
    }
 
    public void registerObserver(Observer o){
