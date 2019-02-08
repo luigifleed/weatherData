@@ -2,7 +2,7 @@
 
 import java.util.*;
 
-public class AppForecast implements Observer{
+public class AppForecast implements Observer, DisplayElement{
   private float currentPressure = 29.92f;
   private float lastPressure;
   private WeatherData weatherData;
