@@ -1,85 +1,29 @@
-/**
- * Jesus Antonio Gonzalez Quevedo   a00399890
- * Juan Manuel Gonzalez Calleros    Design and Software Architecture
- */
-import java.util.Calendar;
-
-public class AppAverage implements Observer {
-    // Definition of constants
-    private final float DEFAULT_TEMPERATURE = 30f;
-
-    // Definition of variables
+public class AppAverage implements Observer, DisplayElement {
+    private float maxTemp = 0.0f;
+    private float minTemp = 200;
+    private float tempSum = 0.0f;
+    private int numReadings;
     private WeatherData weatherdata;
-    private float maxTemperature;
-    private float minTemperature;
-    private int timesUpdated;
-    private Calendar dateOfUpdate;
 
-    /**
-     * Class creation method. Initializes the values to their default value.
-     * The Calendar is initialized to be the current Calendar value.
-     */
     public AppAverage(WeatherData weatherdata){
-        // Initialize to default values
         this.weatherdata = weatherdata;
-        this.maxTemperature = Float.MIN_VALUE;
-        this.minTemperature = Float.MAX_VALUE;
-        this.timesUpdated = 0;
-        this.dateOfUpdate = Calendar.getInstance();
-        
-        // Tell WeatherData that a new Observer has been created.
         weatherdata.registerObserver(this);
     }
 
-    /**
-     * Required by Interface Observer.
-     * Uses the temperature obtained from WeatherData to calculate the
-     *  average temperature per month basis.
-     */
-    public void update(float temperature, float humidity, float pressure){
-        // Every time the month changes, the current values are reset.
-        resetIfNewMonth();
+    public void update(float temp, float humidity, float pressure){
+        tempSum += temp;
+        numReadings++;
 
-        // Updates the values if the temperature is higher or lower than the
-        //  previous values.
-        if (temperature > maxTemperature)
-            maxTemperature = temperature;
+        if (temp > maxTemp)
+            maxTemp = temp;
 
-        if (temperature < minTemperature)
-            minTemperature = temperature;
-        
-        // Prints the values used.
-        timesUpdated ++;
+        if (temp < minTemp)
+            minTemp = temp;
+
         display();
     }
 
-    /**
-     * Verifies if a new Month is ocurring based on the date of updating.
-     * If a new Month is present, all values are reset.
-     */
-    private void resetIfNewMonth(){
-        // Definition of variables
-        Calendar currentDate;
-
-        // Initialization of variables
-        currentDate = Calendar.getInstance();
-
-        // Resets the values for the averages if a new Month is present.
-        if (dateOfUpdate.get(Calendar.MONTH) != currentDate.get(Calendar.MONTH)){
-            this.maxTemperature = Float.MIN_VALUE;
-            this.minTemperature = Float.MAX_VALUE;
-            this.timesUpdated = 0;
-            this.dateOfUpdate = currentDate;
-        }
-    }
-
-    /**
-     * Basic printing to the terminal of the values and the average.
-     */
-    private void display(){
-        System.out.printf("Average: %f\n", (maxTemperature + minTemperature)/2 );
-        System.out.printf("Maximum: %f\n", maxTemperature);
-        System.out.printf("Minimum: %f\n", minTemperature);
-        System.out.printf("Data updated %d times.\n", timesUpdated);
+    public void display(){
+        System.out.println("Avg/Max/Min Temperature = " + (tempSum/numReadings) + "/" + maxTemp + "/" + minTemp);
     }
 }
